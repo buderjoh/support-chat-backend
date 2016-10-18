@@ -2,6 +2,8 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
+console.log('Web Server started, waiting for connections...');
+
 server.listen(8080);
 
 app.get('/', function (req, res) {
@@ -9,8 +11,13 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
+  console.log('user connected');
+
+  socket.on('disconnect', function(){
+    console.log('user disconnected');
   });
+
+  socket.on('login', function(data){
+      console.log(data);
+    });
 });
