@@ -4,6 +4,8 @@ var io = require('socket.io')(server);
 
 console.log('Web Server started, waiting for connections...');
 
+var customers = new Array();
+
 server.listen(8080);
 
 app.get('/', function (req, res) {
@@ -23,6 +25,10 @@ io.on('connection', function (socket) {
   });
 
   socket.on('login', function(data){
-      console.log(data);
+      if (data) {
+          console.log(data);
+          customers.push(data);
+          socket.emit("pushCustomers", customers);
+      }
     });
 });
